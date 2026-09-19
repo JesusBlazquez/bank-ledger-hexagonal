@@ -29,6 +29,3 @@ Thumbs.db
 *.log
 logs/
 HELP.md
-
-# AI pair-programming notes (kept local)
-CLAUDE.md
