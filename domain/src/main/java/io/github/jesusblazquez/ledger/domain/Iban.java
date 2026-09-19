@@ -35,6 +35,18 @@ public record Iban(String value) {
         return new Iban(value);
     }
 
+    /**
+     * Builds an IBAN from a country code and a national account number (BBAN), computing the check
+     * digits. This is how a bank issues an account number: the check digits are derived, never
+     * chosen.
+     */
+    public static Iban forAccount(String countryCode, String bban) {
+        String normalisedCountry = countryCode.toUpperCase();
+        String normalisedBban = bban.toUpperCase();
+        int checkDigits = 98 - modulo97(normalisedBban + normalisedCountry + "00");
+        return new Iban("%s%02d%s".formatted(normalisedCountry, checkDigits, normalisedBban));
+    }
+
     public String countryCode() {
         return value.substring(0, 2);
     }
@@ -50,12 +62,15 @@ public record Iban(String value) {
      * by 97. The remainder is computed digit by digit because the number is far larger than a long.
      */
     private static boolean hasValidCheckDigits(String iban) {
-        String rearranged = iban.substring(4) + iban.substring(0, 4);
+        return modulo97(iban.substring(4) + iban.substring(0, 4)) == 1;
+    }
+
+    private static int modulo97(String value) {
         int remainder = 0;
-        for (char character : rearranged.toCharArray()) {
+        for (char character : value.toCharArray()) {
             int digits = Character.isDigit(character) ? Character.getNumericValue(character) : character - 'A' + 10;
             remainder = (digits > 9 ? remainder * 100 + digits : remainder * 10 + digits) % 97;
         }
-        return remainder == 1;
+        return remainder;
     }
 }

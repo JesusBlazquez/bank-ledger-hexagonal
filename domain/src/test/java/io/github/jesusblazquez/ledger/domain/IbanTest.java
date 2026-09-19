@@ -41,6 +41,14 @@ class IbanTest {
     }
 
     @Test
+    void buildsAValidIbanFromAnAccountNumber() {
+        Iban generated = Iban.forAccount("ES", "21000418450200051332");
+
+        assertThat(generated.value()).isEqualTo("ES9121000418450200051332");
+        assertThat(Iban.of(generated.value())).isEqualTo(generated);
+    }
+
+    @Test
     void exposesTheCountryCode() {
         assertThat(Iban.of("ES9121000418450200051332").countryCode()).isEqualTo("ES");
     }
