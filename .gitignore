@@ -1,0 +1,34 @@
+# Build
+target/
+!.mvn/wrapper/maven-wrapper.jar
+build.log
+
+# IDE
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+*.code-workspace
+
+# Environment / secrets
+.env
+*.pem
+*.key
+
+# Node / Angular
+node_modules/
+dist/
+.angular/
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+HELP.md
+
+# AI pair-programming notes (kept local)
+CLAUDE.md
